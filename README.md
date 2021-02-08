@@ -14,6 +14,7 @@
   Application Insights: Using a Simple Instrumentation Key Received when creating an Application Insights Resource in Azure, all the NiFi monitoring data can be pushed to Azure. Using Grafana & AIDashboard various graphs are plotted using Kusto Query Language.
 
   Visit https://github.com/tushardhadiwal/docker-influxdb-grafana for Grafana And InfludDB Support.
+  Visit https://github.com/microsoft/MiFi for MiFi Source Code.
 
 ## Architecture
 
