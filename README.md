@@ -27,8 +27,6 @@
 
 #### Quick Start
 
-EASY:
-
 Run following commands on machine which has access to NiFi cluster:
 ```sh
 git clone git@github.com:microsoft/MiFi.git
@@ -44,7 +42,7 @@ Username: root
 Password: root
 ```
 
-ADVANCE:
+#### DIY Deployment:
 
 To run NiFi Monitor along with InfluxDb & Grafana:
 
@@ -61,13 +59,18 @@ docker run -d \
   -v /home/$(whoami)/nifimonitor/grafana:/var/lib/grafana \
   dtushar/docker-influxdb-grafana:latest
 ```
-Now Visit http://localhost:3003 Login to Grafana with root & root as default username & password.  
+You can now visit http://localhost:3003 to access Grafana with following credentials.
+```sh
+Username: root
+Password: root
+```
 
-Add datasources for InfluxDB,InfluxDB-Flux & Azure Monitor. 
-Import Dashboards available in this repository to Grafana. 
-You may need to slightly modify the queries to adjust to number of nodes in your Apache NiFi cluster.
-Configure alerts as Needed. Microsoft Teams alerts are tested.
-Refere to deploy.sh script for adding various datasources and configurations related to grafana with curl commands.
+- Add datasources for InfluxDB,InfluxDB-Flux & Azure Monitor. 
+- Import Dashboards available in this repository to Grafana. 
+- You can modify the queries to adjust to number of nodes in your Apache NiFi cluster.
+- Configure alerts/notifications as Needed. Microsoft Teams alerts template can be imported as shown in deploy script.
+
+Pleae Refer to deploy.sh script for adding various datasources and configurations related to grafana with curl commands.
 
 Run this command to run MiFi against your NiFi Cluster :
 
@@ -83,14 +86,15 @@ docker run \
 dtushar/mifi:1.0
 ```
 
-If your NiFi Cluster is SECURE and supports login via certificate then please add the following to mount the certificate into MiFi Container:
+If your NiFi Cluster is SECURE and supports login via certificate then please add the following to the above command, this will mount the certificate into MiFi Container:
 ```sh
 -e SECURE=True \
 -v $(pwd)/keystore.pkcs12:/opt/nifimonitor/cert.pkcs12 \
 -e CERT_PASS="PasswordForCertificate" \
 ```
 
-To run MiFi along with InfluxDb & Grafana & Push Monitoring Data to Application Insights, Please create a Application Insights Resource, and provide the Instrumentation Key while running the container.  An Azure Log Analytics Dashboard can be created using similar KQL Queries and Using Grafana can be skipped if desired. Add the following lines to above command:
+* To run MiFi along with InfluxDb & Grafana & Push Monitoring Data to Application Insights, Please create a Application Insights Resource, and provide the Instrumentation Key while running the container.  
+* An Azure Log Analytics Dashboard can be created using similar KQL Queries and Using Grafana can be skipped if desired. Add the following lines to above command:
 
 ```sh
 -e IKEY="Optional AppInsights Instrumentation Key" \ 
