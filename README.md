@@ -31,7 +31,7 @@
 
 ## Architecture
 
-![](./Docs/NiFiMonitorArch400ppi.png)
+![](./Docs/MiFiArchitectureDiagram.png)
 
 #### Quick Start
 
