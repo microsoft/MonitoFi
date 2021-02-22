@@ -60,7 +60,7 @@ dtushar/mifi:1.0
 Now Visit http://localhost:3003 Login to Grafana with root & root as default username & password.  Add datasources for InfluxDB,InfluxDB-Flux & Azure Monitor. Import Dashboards available in this repository to Grafana. You may need to slightly modify the queries to adjust to number of nodes in your Apache NiFi cluster.
 Configure alerts as Needed. Microsoft Teams alerts are tested.
 
-To run NiFi Monitor along with InfluxDb & Grafana & Push Monitoring Data to Application Insights, Please create a Application Insights Resource, and provide the Instrumentation Key while running the container. A Azure Log Analytics Dashboard can be created using similar KQL Queries and Using Grafana can be skipped if desired.
+To run NiFi Monitor along with InfluxDb & Grafana & Push Monitoring Data to Application Insights, Please create a Application Insights Resource, and provide the Instrumentation Key while running the container. An Azure Log Analytics Dashboard can be created using similar KQL Queries and Using Grafana can be skipped if desired.
 
 ## Contributing
 
