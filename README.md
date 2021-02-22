@@ -1,9 +1,9 @@
-# MiFi : A Monitoring Tool for NiFi
+# MiFi : A Monitoring Tool for Apache NiFi
 
-  One Place for monitoring Health and Performance of your NiFi Cluster!
+  One Place for monitoring Health and Performance of your Apache NiFi Cluster!
 
-  MiFi runs as an external program to NiFi Cluster and monitors the health and performance of the cluster using Data polled using Apache NiFi-API.
-  MiFi container can be deployed anywhere as long as it is able to access the NiFi Cluster (in same vnet or publicly exposed NiFi Cluster).
+  MiFi runs as an external program to Apache NiFi Cluster and monitors the health and performance of the cluster using Data polled using Apache NiFi-API.
+  MiFi container can be deployed anywhere as long as it is able to access the Apache NiFi Cluster (in same vnet or publicly exposed Apache NiFi Cluster).
   
   There are 2 configurations in which this application can be deployed. 
   One is storing data on prem and another is in Azure Application Insights.
@@ -14,6 +14,7 @@
   Application Insights: Using a Simple Instrumentation Key Received when creating an Application Insights Resource in Azure, all the NiFi monitoring data can be pushed to Azure. Using Grafana & AIDashboard various graphs are plotted using Kusto Query Language.
 
   Visit https://github.com/tushardhadiwal/docker-influxdb-grafana for Grafana And InfludDB Support.
+  Visit https://github.com/microsoft/MiFi for MiFi Source Code.
 
 ## Architecture
 
