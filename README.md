@@ -2,23 +2,31 @@
 
   One Place for monitoring Health and Performance of your Apache NiFi Cluster!
 
-  MiFi runs as an external program to Apache NiFi Cluster and monitors the health and performance of the cluster. It is backed by Data polled using Apache NiFi-API.
-  MiFi container can be deployed anywhere as long as it is able to access the Apache NiFi Cluster (in same vnet or via public URL for Apache NiFi Cluster).
-  It Supports SECURE as well as UNSECURE NiFi Clusters.
+## Features :
+
+* Runs as an external program to Apache NiFi cluster and can be deployed anywhere as long as it is able to access the Apache NiFi Cluster
+* Monitors the health and performance of the cluster
+* Backed by Data polled using Apache NiFi-API
+* Support for SECURE clusters via PKCS12 Cert Based Login
+* Ability to Send Notifications/Alerts Based on Anomalies in Flows or Cluster Operation
+* Highly Configurable
+* Comes with Ready To Import Grafana Dashboards, Notification Channels
+* Easy Optional Integration with Azure Application Insights
   
   There are 2 configurations in which this application can be deployed. 
 
-  1. Stores Monitoring Data locally using InfluxDB and Display via Grafana.
-  2. Stores Data in Azure Application Insights Resource & locally in InfluxDB and Display via Grafana.
+  1. Store Monitoring Data locally using InfluxDB and Display charts via Grafana.
+  2. Store Data in Azure Application Insights Resource & locally in InfluxDB and Display charts via Grafana.
 
   Both Options Support Sending Timely Alerts/Notifications to Microsoft Teams or Email via Grafana whenever anomalies in cluster or execution of flow are detected.
   
-  On premises :
+  ### On Prem :
   MiFi uses InfluxDB for storing the monitoring data locally and uses Grafana to plot various charts & queries in Dashboards & Send Timely Alerts incase anomalies in cluster or execution of flow are detected. These queries can be easily configured based on your needs.
 
-  Application Insights: Using a Simple Instrumentation Key Received when creating an Application Insights Resource in Azure, all the MiFi monitoring data can be pushed to Azure. This data can be viewed using Grafana by importing included AIDashboard. Queries for data in Application Insights are written using Kusto Query Language and are easy to modify.
+  ### Azure Application Insights: 
+  Using a Simple Instrumentation Key Received when creating an Application Insights Resource in Azure, all the MiFi monitoring data can be pushed to Azure. This data can be viewed using Grafana by importing included AIDashboard. Queries for data in Application Insights are written using Kusto Query Language and are easy to modify.
 
-  Visit https://github.com/tushardhadiwal/docker-influxdb-grafana for Grafana And InfludDB Support.
+  Visit https://github.com/tushardhadiwal/docker-influxdb-grafana for Grafana And InfludDB Support.\
   Visit https://github.com/microsoft/MiFi for MiFi Source Code.
 
 ## Architecture
