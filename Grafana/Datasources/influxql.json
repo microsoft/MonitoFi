@@ -1,0 +1,23 @@
+{
+    "id": 1,
+    "orgId": 1,
+    "name": "InfluxDB",
+    "type": "influxdb",
+    "typeLogoUrl": "public/app/plugins/datasource/influxdb/img/influxdb_logo.svg",
+    "access": "proxy",
+    "url": "http://localhost:8086",
+    "user": "root",
+    "database": "nifi",
+    "basicAuth": false,
+    "isDefault": true,
+    "jsonData": {
+        "defaultBucket": "nifi.autogen",
+        "httpMode": "POST",
+        "organization": "nifi",
+        "version": "InfluxQL"
+    },
+    "readOnly": false,
+    "secureJsonData": {
+        "password": "root"
+    }
+}

@@ -1,0 +1,1709 @@
+{
+    "dashboard": {
+        "annotations": {
+            "list": [
+                {
+                    "builtIn": 1,
+                    "datasource": "-- Grafana --",
+                    "enable": true,
+                    "hide": true,
+                    "iconColor": "rgba(0, 211, 255, 1)",
+                    "name": "Annotations \u0026 Alerts",
+                    "type": "dashboard"
+                }
+            ]
+        },
+        "editable": true,
+        "gnetId": null,
+        "graphTooltip": 0,
+        "id": null,
+        "links": [],
+        "panels": [
+            {
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        }
+                    },
+                    "overrides": []
+                },
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 0
+                },
+                "id": 2,
+                "options": {
+                    "colorMode": "value",
+                    "graphMode": "area",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                        "calcs": [
+                            "last"
+                        ],
+                        "fields": "",
+                        "values": false
+                    },
+                    "textMode": "auto"
+                },
+                "pluginVersion": "7.3.1",
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/cluster/summary\"\n| extend connectedNodeCount_ = toint(parse_json(tostring(parse_json(message).clusterSummary)).connectedNodeCount)\n| extend totalNodeCount_ = toint(parse_json(tostring(parse_json(message).clusterSummary)).totalNodeCount)\n| summarize by connectedNodeCount_,totalNodeCount_,bin(timestamp,1h)\n",
+                            "resultFormat": "table"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "ConnectedNodes Info",
+                "transformations": [
+                    {
+                        "id": "seriesToColumns",
+                        "options": {
+                            "byField": "timestamp"
+                        }
+                    },
+                    {
+                        "id": "organize",
+                        "options": {
+                            "excludeByName": {},
+                            "indexByName": {},
+                            "renameByName": {
+                                "connectedNodeCount_": "Connected Nodes",
+                                "totalNodeCount_": "Total Nodes"
+                            }
+                        }
+                    }
+                ],
+                "type": "stat"
+            },
+            {
+                "aliasColors": {},
+                "bars": false,
+                "dashLength": 10,
+                "dashes": false,
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        }
+                    },
+                    "overrides": []
+                },
+                "fill": 1,
+                "fillGradient": 0,
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 0
+                },
+                "hiddenSeries": false,
+                "id": 13,
+                "legend": {
+                    "alignAsTable": true,
+                    "avg": false,
+                    "current": true,
+                    "max": true,
+                    "min": true,
+                    "rightSide": true,
+                    "show": true,
+                    "total": false,
+                    "values": true
+                },
+                "lines": true,
+                "linewidth": 1,
+                "nullPointMode": "null",
+                "options": {
+                    "alertThreshold": true
+                },
+                "percentage": false,
+                "pluginVersion": "7.3.1",
+                "pointradius": 2,
+                "points": false,
+                "renderer": "flot",
+                "seriesOverrides": [],
+                "spaceLength": 10,
+                "stack": false,
+                "steppedLine": false,
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/process-groups/root\"\n| extend flowFilesIn0_ = tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).processGroupFlow)).flow)).connections))[0].status)).aggregateSnapshot)).flowFilesIn)\n| summarize avg(toint(flowFilesIn0_)) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    },
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/process-groups/root\"\n| extend flowFilesIn1_ = tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).processGroupFlow)).flow)).connections))[0].status)).aggregateSnapshot)).flowFilesIn)\n| summarize avg(toint(flowFilesIn1_)) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "B",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    },
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/process-groups/root\"\n| extend flowFilesIn2_ = tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).processGroupFlow)).flow)).connections))[0].status)).aggregateSnapshot)).flowFilesIn)\n| summarize avg(toint(flowFilesIn2_)) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "C",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "thresholds": [],
+                "timeFrom": null,
+                "timeRegions": [],
+                "timeShift": null,
+                "title": "Flow Files In Per Node",
+                "tooltip": {
+                    "shared": true,
+                    "sort": 0,
+                    "value_type": "individual"
+                },
+                "transformations": [
+                    {
+                        "id": "seriesToColumns",
+                        "options": {
+                            "byField": "timestamp"
+                        }
+                    },
+                    {
+                        "id": "organize",
+                        "options": {
+                            "excludeByName": {},
+                            "indexByName": {},
+                            "renameByName": {
+                                "sum_flowFilesIn0_": "Connection 1",
+                                "sum_flowFilesIn1_": "Connection 2",
+                                "sum_flowFilesIn2_": "Connection 3",
+                                "sum_flowFilesOut0_": "Connection 1",
+                                "sum_flowFilesOut1_": "Connection 2",
+                                "sum_flowFilesOut2_": "Connection 3"
+                            }
+                        }
+                    }
+                ],
+                "type": "graph",
+                "xaxis": {
+                    "buckets": null,
+                    "mode": "time",
+                    "name": null,
+                    "show": true,
+                    "values": []
+                },
+                "yaxes": [
+                    {
+                        "$$hashKey": "object:1142",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    },
+                    {
+                        "$$hashKey": "object:1143",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    }
+                ],
+                "yaxis": {
+                    "align": false,
+                    "alignLevel": null
+                }
+            },
+            {
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        }
+                    },
+                    "overrides": []
+                },
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 8
+                },
+                "id": 20,
+                "interval": "5m",
+                "options": {
+                    "reduceOptions": {
+                        "calcs": [
+                            "last"
+                        ],
+                        "fields": "",
+                        "values": false
+                    },
+                    "showThresholdLabels": false,
+                    "showThresholdMarkers": true
+                },
+                "pluginVersion": "7.3.1",
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/status\"\n| extend disabledCount_ = toint(parse_json(tostring(parse_json(message).controllerStatus)).disabledCount)\n| extend runningCount_ = toint(parse_json(tostring(parse_json(message).controllerStatus)).runningCount)\n| extend syncFailureCount_ = toint(parse_json(tostring(parse_json(message).controllerStatus)).syncFailureCount)\n| extend stoppedCount_ = toint(parse_json(tostring(parse_json(message).controllerStatus)).stoppedCount)\n| summarize by runningCount_,stoppedCount_,syncFailureCount_,disabledCount_,bin(timestamp,$__interval)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Processor Status",
+                "transformations": [
+                    {
+                        "id": "organize",
+                        "options": {
+                            "excludeByName": {},
+                            "indexByName": {},
+                            "renameByName": {
+                                "disabledCount_": "Disabled Processors",
+                                "runningCount_": "Running Processors",
+                                "stoppedCount_": "Stopped Processors",
+                                "syncFailureCount_": "SyncFailed Processors"
+                            }
+                        }
+                    }
+                ],
+                "type": "gauge"
+            },
+            {
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "percentunit"
+                    },
+                    "overrides": [
+                        {
+                            "matcher": {
+                                "id": "byName",
+                                "options": "Total Space"
+                            },
+                            "properties": [
+                                {
+                                    "id": "unit",
+                                    "value": "decbytes"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 8
+                },
+                "id": 15,
+                "options": {
+                    "colorMode": "value",
+                    "graphMode": "area",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                        "calcs": [
+                            "mean"
+                        ],
+                        "fields": "",
+                        "values": false
+                    },
+                    "textMode": "auto"
+                },
+                "pluginVersion": "7.3.1",
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"system-diagnostics?nodewise=true\"\n| extend usedSpace0_ = tolong(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).systemDiagnostics)).nodeSnapshots))[0].snapshot)).flowFileRepositoryStorageUsage)).usedSpaceBytes)\n| extend totalSpace0_ = tolong(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).systemDiagnostics)).nodeSnapshots))[0].snapshot)).flowFileRepositoryStorageUsage)).totalSpaceBytes)\n| summarize avg(usedSpace0_),avg(totalSpace0_) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    },
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"system-diagnostics?nodewise=true\"\n| extend usedSpace1_ = tolong(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).systemDiagnostics)).nodeSnapshots))[1].snapshot)).flowFileRepositoryStorageUsage)).usedSpaceBytes)\n| extend totalSpace1_ = tolong(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).systemDiagnostics)).nodeSnapshots))[1].snapshot)).flowFileRepositoryStorageUsage)).totalSpaceBytes)\n| summarize avg(usedSpace1_),avg(totalSpace1_) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "B",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    },
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"system-diagnostics?nodewise=true\"\n| extend usedSpace2_ = tolong(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).systemDiagnostics)).nodeSnapshots))[2].snapshot)).flowFileRepositoryStorageUsage)).usedSpaceBytes)\n| extend totalSpace2_ = tolong(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).systemDiagnostics)).nodeSnapshots))[2].snapshot)).flowFileRepositoryStorageUsage)).totalSpaceBytes)\n| summarize avg(usedSpace2_),avg(totalSpace2_) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "C",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Used Space Total Space",
+                "transformations": [
+                    {
+                        "id": "seriesToColumns",
+                        "options": {
+                            "byField": "timestamp"
+                        }
+                    },
+                    {
+                        "id": "organize",
+                        "options": {
+                            "excludeByName": {
+                                "avg_usedSpace0_": false,
+                                "avg_usedSpace1_": false,
+                                "avg_usedSpace2_": false
+                            },
+                            "indexByName": {},
+                            "renameByName": {
+                                "avg_totalSpace0_": "TotalSpace1",
+                                "avg_totalSpace1_": "TotalSpace2",
+                                "avg_totalSpace2_": "TotalSpace3",
+                                "avg_usedSpace0_": "UsedSpace1",
+                                "avg_usedSpace1_": "UsedSpace2",
+                                "avg_usedSpace2_": "UsedSpace3"
+                            }
+                        }
+                    },
+                    {
+                        "id": "calculateField",
+                        "options": {
+                            "alias": "%Used Node 1",
+                            "binary": {
+                                "left": "UsedSpace1",
+                                "operator": "/",
+                                "reducer": "sum",
+                                "right": "TotalSpace1"
+                            },
+                            "mode": "binary",
+                            "reduce": {
+                                "reducer": "sum"
+                            }
+                        }
+                    },
+                    {
+                        "id": "calculateField",
+                        "options": {
+                            "alias": "%Used Node 2",
+                            "binary": {
+                                "left": "UsedSpace2",
+                                "operator": "/",
+                                "reducer": "sum",
+                                "right": "TotalSpace2"
+                            },
+                            "mode": "binary",
+                            "reduce": {
+                                "reducer": "sum"
+                            }
+                        }
+                    },
+                    {
+                        "id": "calculateField",
+                        "options": {
+                            "alias": "%Used Node 3",
+                            "binary": {
+                                "left": "UsedSpace3",
+                                "operator": "/",
+                                "reducer": "sum",
+                                "right": "TotalSpace3"
+                            },
+                            "mode": "binary",
+                            "reduce": {
+                                "reducer": "sum"
+                            }
+                        }
+                    },
+                    {
+                        "id": "organize",
+                        "options": {
+                            "excludeByName": {
+                                "UsedSpace1": true,
+                                "UsedSpace2": true,
+                                "UsedSpace3": true
+                            },
+                            "indexByName": {},
+                            "renameByName": {}
+                        }
+                    },
+                    {
+                        "id": "calculateField",
+                        "options": {
+                            "alias": "TSI",
+                            "binary": {
+                                "left": "TotalSpace1",
+                                "operator": "+",
+                                "reducer": "sum",
+                                "right": "TotalSpace2"
+                            },
+                            "mode": "binary",
+                            "reduce": {
+                                "reducer": "sum"
+                            }
+                        }
+                    },
+                    {
+                        "id": "calculateField",
+                        "options": {
+                            "alias": "Total Space",
+                            "binary": {
+                                "left": "TSI",
+                                "operator": "+",
+                                "reducer": "sum",
+                                "right": "TotalSpace3"
+                            },
+                            "mode": "binary",
+                            "reduce": {
+                                "reducer": "sum"
+                            }
+                        }
+                    },
+                    {
+                        "id": "organize",
+                        "options": {
+                            "excludeByName": {
+                                "TSI": true,
+                                "TotalSpace1": true,
+                                "TotalSpace2": true,
+                                "TotalSpace3": true
+                            },
+                            "indexByName": {},
+                            "renameByName": {}
+                        }
+                    }
+                ],
+                "type": "stat"
+            },
+            {
+                "alert": {
+                    "alertRuleTags": {},
+                    "conditions": [
+                        {
+                            "evaluator": {
+                                "params": [
+                                    25000
+                                ],
+                                "type": "gt"
+                            },
+                            "operator": {
+                                "type": "and"
+                            },
+                            "query": {
+                                "params": [
+                                    "A",
+                                    "5m",
+                                    "now"
+                                ]
+                            },
+                            "reducer": {
+                                "params": [],
+                                "type": "avg"
+                            },
+                            "type": "query"
+                        }
+                    ],
+                    "executionErrorState": "alerting",
+                    "for": "20m",
+                    "frequency": "5m",
+                    "handler": 1,
+                    "message": "Hi Flowfiles in Queue is above expected Threshold. Take a look.",
+                    "name": "FlowFilesQueued alert",
+                    "noDataState": "ok",
+                    "notifications": []
+                },
+                "aliasColors": {},
+                "bars": false,
+                "dashLength": 10,
+                "dashes": false,
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null
+                        },
+                        "displayName": "FlowFiles in Queue",
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "none"
+                    },
+                    "overrides": []
+                },
+                "fill": 0,
+                "fillGradient": 0,
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 16
+                },
+                "hiddenSeries": false,
+                "id": 8,
+                "interval": "5m",
+                "legend": {
+                    "alignAsTable": true,
+                    "avg": false,
+                    "current": true,
+                    "hideEmpty": false,
+                    "hideZero": false,
+                    "max": true,
+                    "min": true,
+                    "rightSide": false,
+                    "show": true,
+                    "total": false,
+                    "values": true
+                },
+                "lines": true,
+                "linewidth": 1,
+                "nullPointMode": "null",
+                "options": {
+                    "alertThreshold": true
+                },
+                "percentage": false,
+                "pluginVersion": "7.3.1",
+                "pointradius": 2,
+                "points": true,
+                "renderer": "flot",
+                "seriesOverrides": [],
+                "spaceLength": 10,
+                "stack": false,
+                "steppedLine": false,
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/status\"\n| extend flowFilesQueued_ = tostring(parse_json(tostring(parse_json(message).controllerStatus)).flowFilesQueued)\n| summarize avg(toint(flowFilesQueued_)) by bin(timestamp,$__interval)\n| order by timestamp asc\n",
+                            "resultFormat": "table"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "thresholds": [
+                    {
+                        "colorMode": "critical",
+                        "fill": true,
+                        "line": true,
+                        "op": "gt",
+                        "value": 25000
+                    }
+                ],
+                "timeFrom": null,
+                "timeRegions": [],
+                "timeShift": null,
+                "title": "FlowFilesQueued",
+                "tooltip": {
+                    "shared": true,
+                    "sort": 0,
+                    "value_type": "individual"
+                },
+                "type": "graph",
+                "xaxis": {
+                    "buckets": null,
+                    "mode": "time",
+                    "name": null,
+                    "show": true,
+                    "values": []
+                },
+                "yaxes": [
+                    {
+                        "$$hashKey": "object:252",
+                        "format": "none",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    },
+                    {
+                        "$$hashKey": "object:253",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    }
+                ],
+                "yaxis": {
+                    "align": false,
+                    "alignLevel": null
+                }
+            },
+            {
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null,
+                            "filterable": false
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        }
+                    },
+                    "overrides": []
+                },
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 16
+                },
+                "id": 17,
+                "options": {
+                    "showHeader": true
+                },
+                "pluginVersion": "7.3.1",
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| extend message_ = tostring(parse_json(message).message)\n| summarize count() by message_",
+                            "resultFormat": "table"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Endpoint \u0026 Responses",
+                "transformations": [
+                    {
+                        "id": "organize",
+                        "options": {
+                            "excludeByName": {},
+                            "indexByName": {},
+                            "renameByName": {
+                                "count_": "Number of Calls",
+                                "message_": "API Endpoint"
+                            }
+                        }
+                    }
+                ],
+                "type": "table"
+            },
+            {
+                "aliasColors": {},
+                "bars": false,
+                "dashLength": 10,
+                "dashes": false,
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null
+                        },
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        }
+                    },
+                    "overrides": []
+                },
+                "fill": 1,
+                "fillGradient": 0,
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 24
+                },
+                "hiddenSeries": false,
+                "id": 12,
+                "legend": {
+                    "alignAsTable": true,
+                    "avg": false,
+                    "current": true,
+                    "max": true,
+                    "min": true,
+                    "rightSide": true,
+                    "show": true,
+                    "total": false,
+                    "values": true
+                },
+                "lines": true,
+                "linewidth": 1,
+                "nullPointMode": "null",
+                "options": {
+                    "alertThreshold": true
+                },
+                "percentage": false,
+                "pluginVersion": "7.3.1",
+                "pointradius": 2,
+                "points": false,
+                "renderer": "flot",
+                "seriesOverrides": [],
+                "spaceLength": 10,
+                "stack": false,
+                "steppedLine": false,
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/process-groups/root\"\n| extend flowFilesOut0_ = tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).processGroupFlow)).flow)).connections))[0].status)).aggregateSnapshot)).flowFilesOut)\n| summarize avg(toint(flowFilesOut0_)) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    },
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/process-groups/root\"\n| extend flowFilesOut1_ = tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).processGroupFlow)).flow)).connections))[1].status)).aggregateSnapshot)).flowFilesOut)\n| summarize avg(toint(flowFilesOut1_)) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "B",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    },
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/process-groups/root\"\n| extend flowFilesOut2_ = tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).processGroupFlow)).flow)).connections))[2].status)).aggregateSnapshot)).flowFilesOut)\n| summarize avg(toint(flowFilesOut2_)) by bin(timestamp,5m)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "C",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "thresholds": [],
+                "timeFrom": null,
+                "timeRegions": [],
+                "timeShift": null,
+                "title": "Flow Files Processed Per Connection",
+                "tooltip": {
+                    "shared": true,
+                    "sort": 0,
+                    "value_type": "individual"
+                },
+                "transformations": [
+                    {
+                        "id": "seriesToColumns",
+                        "options": {
+                            "byField": "timestamp"
+                        }
+                    },
+                    {
+                        "id": "organize",
+                        "options": {
+                            "excludeByName": {},
+                            "indexByName": {},
+                            "renameByName": {
+                                "sum_flowFilesOut0_": "Connection 1",
+                                "sum_flowFilesOut1_": "Connection 2",
+                                "sum_flowFilesOut2_": "Connection 3"
+                            }
+                        }
+                    }
+                ],
+                "type": "graph",
+                "xaxis": {
+                    "buckets": null,
+                    "mode": "time",
+                    "name": null,
+                    "show": true,
+                    "values": []
+                },
+                "yaxes": [
+                    {
+                        "$$hashKey": "object:1142",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    },
+                    {
+                        "$$hashKey": "object:1143",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    }
+                ],
+                "yaxis": {
+                    "align": false,
+                    "alignLevel": null
+                }
+            },
+            {
+                "aliasColors": {},
+                "bars": false,
+                "dashLength": 10,
+                "dashes": false,
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null
+                        },
+                        "displayName": "Avg Heap Utilisation %",
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "percent"
+                    },
+                    "overrides": []
+                },
+                "fill": 1,
+                "fillGradient": 5,
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 24
+                },
+                "hiddenSeries": false,
+                "id": 6,
+                "legend": {
+                    "alignAsTable": true,
+                    "avg": false,
+                    "current": true,
+                    "max": true,
+                    "min": true,
+                    "rightSide": false,
+                    "show": true,
+                    "total": false,
+                    "values": true
+                },
+                "lines": true,
+                "linewidth": 2,
+                "nullPointMode": "null",
+                "options": {
+                    "alertThreshold": true
+                },
+                "percentage": false,
+                "pluginVersion": "7.3.1",
+                "pointradius": 2,
+                "points": true,
+                "renderer": "flot",
+                "seriesOverrides": [],
+                "spaceLength": 10,
+                "stack": false,
+                "steppedLine": false,
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"system-diagnostics?nodewise=true\"\n| extend heapUtilization_ = todouble(substring(tostring(parse_json(tostring(parse_json(tostring(parse_json(message).systemDiagnostics)).aggregateSnapshot)).heapUtilization),0,4))\n| summarize avg(heapUtilization_) by bin(timestamp,$__interval)\n| order by timestamp asc\n",
+                            "resultFormat": "table"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "thresholds": [],
+                "timeFrom": null,
+                "timeRegions": [],
+                "timeShift": null,
+                "title": "Heap Utilisation %",
+                "tooltip": {
+                    "shared": true,
+                    "sort": 0,
+                    "value_type": "individual"
+                },
+                "type": "graph",
+                "xaxis": {
+                    "buckets": null,
+                    "mode": "time",
+                    "name": null,
+                    "show": true,
+                    "values": []
+                },
+                "yaxes": [
+                    {
+                        "$$hashKey": "object:120",
+                        "format": "percent",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    },
+                    {
+                        "$$hashKey": "object:121",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    }
+                ],
+                "yaxis": {
+                    "align": false,
+                    "alignLevel": null
+                }
+            },
+            {
+                "aliasColors": {},
+                "bars": false,
+                "dashLength": 10,
+                "dashes": false,
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {}
+                    },
+                    "overrides": []
+                },
+                "fill": 1,
+                "fillGradient": 0,
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 32
+                },
+                "hiddenSeries": false,
+                "id": 10,
+                "interval": "5m",
+                "legend": {
+                    "avg": false,
+                    "current": false,
+                    "max": false,
+                    "min": false,
+                    "show": true,
+                    "total": false,
+                    "values": false
+                },
+                "lines": true,
+                "linewidth": 1,
+                "nullPointMode": "null",
+                "options": {
+                    "alertThreshold": true
+                },
+                "percentage": false,
+                "pluginVersion": "7.3.1",
+                "pointradius": 2,
+                "points": false,
+                "renderer": "flot",
+                "seriesOverrides": [],
+                "spaceLength": 10,
+                "stack": false,
+                "steppedLine": false,
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/status\"\n| extend activeThreadCount_ = tostring(parse_json(tostring(parse_json(message).controllerStatus)).activeThreadCount)\n| summarize ActiveThreads=sum(toint(activeThreadCount_)) by bin(timestamp,$__interval)\n| order by timestamp asc",
+                            "resultFormat": "time_series"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "thresholds": [],
+                "timeFrom": null,
+                "timeRegions": [],
+                "timeShift": null,
+                "title": "Active Thread Count",
+                "tooltip": {
+                    "shared": true,
+                    "sort": 0,
+                    "value_type": "individual"
+                },
+                "type": "graph",
+                "xaxis": {
+                    "buckets": null,
+                    "mode": "time",
+                    "name": null,
+                    "show": true,
+                    "values": []
+                },
+                "yaxes": [
+                    {
+                        "$$hashKey": "object:977",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    },
+                    {
+                        "$$hashKey": "object:978",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    }
+                ],
+                "yaxis": {
+                    "align": false,
+                    "alignLevel": null
+                }
+            },
+            {
+                "aliasColors": {},
+                "bars": false,
+                "dashLength": 10,
+                "dashes": false,
+                "datasource": "Azure Monitor",
+                "fieldConfig": {
+                    "defaults": {
+                        "custom": {
+                            "align": null
+                        },
+                        "displayName": "KBs Queued",
+                        "mappings": [],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 80
+                                }
+                            ]
+                        },
+                        "unit": "decbytes"
+                    },
+                    "overrides": []
+                },
+                "fill": 1,
+                "fillGradient": 0,
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 32
+                },
+                "hiddenSeries": false,
+                "id": 4,
+                "legend": {
+                    "alignAsTable": true,
+                    "avg": false,
+                    "current": true,
+                    "max": true,
+                    "min": true,
+                    "rightSide": false,
+                    "show": true,
+                    "total": false,
+                    "values": true
+                },
+                "lines": true,
+                "linewidth": 1,
+                "nullPointMode": "null",
+                "options": {
+                    "alertThreshold": true
+                },
+                "percentage": false,
+                "pluginVersion": "7.3.1",
+                "pointradius": 2,
+                "points": true,
+                "renderer": "flot",
+                "seriesOverrides": [],
+                "spaceLength": 10,
+                "stack": false,
+                "steppedLine": false,
+                "targets": [
+                    {
+                        "appInsights": {
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        },
+                        "azureLogAnalytics": {
+                            "query": "//change this example to create your own time series query\n\u003ctable name\u003e                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by \u003cgroup by column\u003e, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+                            "resultFormat": "time_series",
+                            "workspace": "9ae9444e-0f9c-4cd4-945d-bde77ea0ed79"
+                        },
+                        "azureMonitor": {
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "metricDefinition": "select",
+                            "metricName": "select",
+                            "metricNamespace": "select",
+                            "resourceGroup": "select",
+                            "resourceName": "select",
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        },
+                        "hide": false,
+                        "insightsAnalytics": {
+                            "query": "traces\n| where $__timeFilter(timestamp)\n| where parse_json(message).message == \"flow/status\"\n| extend bytesQueued_ = tostring(parse_json(tostring(parse_json(message).controllerStatus)).bytesQueued)\n| summarize KBQueued=avg(toint(bytesQueued_)) by bin(timestamp,$__interval)\n| order by timestamp asc",
+                            "resultFormat": "table"
+                        },
+                        "queryType": "Insights Analytics",
+                        "refId": "A",
+                        "subscription": "a5ab90eb-20ea-405b-839e-8e34b2f85d72"
+                    }
+                ],
+                "thresholds": [],
+                "timeFrom": null,
+                "timeRegions": [],
+                "timeShift": null,
+                "title": "KBs Queued",
+                "tooltip": {
+                    "shared": true,
+                    "sort": 0,
+                    "value_type": "individual"
+                },
+                "type": "graph",
+                "xaxis": {
+                    "buckets": null,
+                    "mode": "time",
+                    "name": null,
+                    "show": true,
+                    "values": []
+                },
+                "yaxes": [
+                    {
+                        "$$hashKey": "object:889",
+                        "format": "decbytes",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    },
+                    {
+                        "$$hashKey": "object:890",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    }
+                ],
+                "yaxis": {
+                    "align": false,
+                    "alignLevel": null
+                }
+            }
+        ],
+        "refresh": "5m",
+        "schemaVersion": 26,
+        "style": "dark",
+        "tags": [],
+        "templating": {
+            "list": []
+        },
+        "time": {
+            "from": "now-1h",
+            "to": "now"
+        },
+        "timepicker": {
+            "refresh_intervals": [
+                "5s",
+                "10s",
+                "30s",
+                "1m",
+                "5m",
+                "15m",
+                "30m",
+                "1h",
+                "2h",
+                "1d"
+            ]
+        },
+        "timezone": "",
+        "title": "AI Dashboard",
+        "uid": null,
+        "version": 0
+    },
+    "folderId": 0,
+    "overwrite": false
+}

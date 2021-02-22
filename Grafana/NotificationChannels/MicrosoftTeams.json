@@ -1,0 +1,16 @@
+{
+    "name": "NiFi Monitor",
+    "type": "teams",
+    "isDefault": true,
+    "sendReminder": false,
+    "disableResolveMessage": false,
+    "frequency": "",
+    "settings": {
+        "autoResolve": true,
+        "httpMethod": "POST",
+        "severity": "critical",
+        "uploadImage": false,
+        "url": "REPLACE WITH TEAMS CHANNEL WEBHOOK URL"
+    },
+    "secureFields": {}
+}

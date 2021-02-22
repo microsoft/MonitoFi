@@ -1,0 +1,25 @@
+{
+    "id": 3,
+    "orgId": 1,
+    "name": "InfluxDB-Flux",
+    "type": "influxdb",
+    "typeLogoUrl": "public/app/plugins/datasource/influxdb/img/influxdb_logo.svg",
+    "access": "proxy",
+    "url": "http://localhost:8086/",
+    "password": "",
+    "user": "",
+    "database": "",
+    "basicAuth": true,
+    "isDefault": false,
+    "jsonData": {
+        "defaultBucket": "nifi/autogen",
+        "httpMode": "POST",
+        "organization": "nifi",
+        "timeInterval": "10",
+        "version": "Flux"
+    },
+    "readOnly": false,
+    "secureJsonData": {
+        "token": "root:root"
+    }
+}
