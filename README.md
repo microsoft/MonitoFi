@@ -2,16 +2,21 @@
 
   One Place for monitoring Health and Performance of your Apache NiFi Cluster!
 
-  MiFi runs as an external program to Apache NiFi Cluster and monitors the health and performance of the cluster using Data polled using Apache NiFi-API.
-  MiFi container can be deployed anywhere as long as it is able to access the Apache NiFi Cluster (in same vnet or publicly exposed Apache NiFi Cluster).
+  MiFi runs as an external program to Apache NiFi Cluster and monitors the health and performance of the cluster. It is backed by Data polled using Apache NiFi-API.
+  MiFi container can be deployed anywhere as long as it is able to access the Apache NiFi Cluster (in same vnet or via public URL for Apache NiFi Cluster).
+  It Supports SECURE as well as UNSECURE NiFi Clusters.
   
   There are 2 configurations in which this application can be deployed. 
-  One is storing data on prem and another is in Azure Application Insights.
+
+  1. Stores Monitoring Data locally using InfluxDB and Display via Grafana.
+  2. Stores Data in Azure Application Insights Resource & locally in InfluxDB and Display via Grafana.
+
+  Both Options Support Sending Timely Alerts/Notifications to Microsoft Teams or Email via Grafana whenever anomalies in cluster or execution of flow are detected.
   
   On premises :
-  MiFi uses InfluxDB for storing the monitoring data locally and uses Grafana to plot various Graphs in Dashboards & Send Timely Alerts incase anomalies are detected.
+  MiFi uses InfluxDB for storing the monitoring data locally and uses Grafana to plot various charts & queries in Dashboards & Send Timely Alerts incase anomalies in cluster or execution of flow are detected. These queries can be easily configured based on your needs.
 
-  Application Insights: Using a Simple Instrumentation Key Received when creating an Application Insights Resource in Azure, all the NiFi monitoring data can be pushed to Azure. Using Grafana & AIDashboard various graphs are plotted using Kusto Query Language.
+  Application Insights: Using a Simple Instrumentation Key Received when creating an Application Insights Resource in Azure, all the MiFi monitoring data can be pushed to Azure. This data can be viewed using Grafana by importing included AIDashboard. Queries for data in Application Insights are written using Kusto Query Language and are easy to modify.
 
   Visit https://github.com/tushardhadiwal/docker-influxdb-grafana for Grafana And InfludDB Support.
   Visit https://github.com/microsoft/MiFi for MiFi Source Code.
@@ -22,46 +27,75 @@
 
 #### Quick Start
 
+EASY:
+
+Run following commands on machine which has access to NiFi cluster:
+```sh
+git clone git@github.com:microsoft/MiFi.git
+```
+Fully Automated Script will take care of running InfluxDB & Grafana container , configuring datasources in grafana, importing pre included dashboards in grafana, Adding notification channels if needed, Running MiFi container against your cluster. Please set variables at the top of the script to desired state.
+```sh
+./deploy.sh
+```
+
+You can now visit http://localhost:3003 to access Grafana with following credentials.
+```sh
+Username: root
+Password: root
+```
+
+ADVANCE:
+
 To run NiFi Monitor along with InfluxDb & Grafana:
 
-```sh
-docker network create mifinet
-```
+Run this container for getting a preconfigured InfluxDB and Grafana Instance that MiFi can push data to.
 
 ```sh
 docker run -d \
   --name influxdb-grafana \
-  --network=mifinet \
+  --network=host \
   -p 3003:3003 \
   -p 3004:8083 \
   -p 8086:8086 \
-  -v /home/centos/nifimonitor/influx:/var/lib/influxdb \
-  -v /home/centos/nifimonitor/grafana:/var/lib/grafana \
+  -v /home/$(whoami)/nifimonitor/influx:/var/lib/influxdb \
+  -v /home/$(whoami)/nifimonitor/grafana:/var/lib/grafana \
   dtushar/docker-influxdb-grafana:latest
 ```
+Now Visit http://localhost:3003 Login to Grafana with root & root as default username & password.  
+
+Add datasources for InfluxDB,InfluxDB-Flux & Azure Monitor. 
+Import Dashboards available in this repository to Grafana. 
+You may need to slightly modify the queries to adjust to number of nodes in your Apache NiFi cluster.
+Configure alerts as Needed. Microsoft Teams alerts are tested.
+Refere to deploy.sh script for adding various datasources and configurations related to grafana with curl commands.
+
+Run this command to run MiFi against your NiFi Cluster :
 
 ```sh
 docker run \
---name=mifi \
---network=mifinet \
--d \
+--name=mifi1 \
+--network=host -d \
 -e INFLUXDB_SERVER="influxdb-grafana" \
 -e ENDPOINT_LIST="controller/cluster,flow/cluster/summary,flow/process-groups/root,flow/status,counters,system-diagnostics" \
 -e SLEEP_INTERVAL=300 \
--e API_URL='http://10.251.0.8:8080/nifi-api/' \
--e SECURE=True \
--v $(pwd)/keystore.pkcs12:/opt/nifimonitor/cert.pkcs12 \
--e CERT_PASS="PasswordForCertificate" \
--e IKEY="Optional AppInsights Instrumentation Key" \ 
---add-host <URL_Of_NiFi_Cluster>:<Public_IP_of_Cluster> \
+-e API_URL='http://localhost:8080/nifi-api/' \
 --restart unless-stopped \
 dtushar/mifi:1.0
 ```
 
-Now Visit http://localhost:3003 Login to Grafana with root & root as default username & password.  Add datasources for InfluxDB,InfluxDB-Flux & Azure Monitor. Import Dashboards available in this repository to Grafana. You may need to slightly modify the queries to adjust to number of nodes in your Apache NiFi cluster.
-Configure alerts as Needed. Microsoft Teams alerts are tested.
+If your NiFi Cluster is SECURE and supports login via certificate then please add the following to mount the certificate into MiFi Container:
+```sh
+-e SECURE=True \
+-v $(pwd)/keystore.pkcs12:/opt/nifimonitor/cert.pkcs12 \
+-e CERT_PASS="PasswordForCertificate" \
+```
 
-To run NiFi Monitor along with InfluxDb & Grafana & Push Monitoring Data to Application Insights, Please create a Application Insights Resource, and provide the Instrumentation Key while running the container. An Azure Log Analytics Dashboard can be created using similar KQL Queries and Using Grafana can be skipped if desired.
+To run MiFi along with InfluxDb & Grafana & Push Monitoring Data to Application Insights, Please create a Application Insights Resource, and provide the Instrumentation Key while running the container.  An Azure Log Analytics Dashboard can be created using similar KQL Queries and Using Grafana can be skipped if desired. Add the following lines to above command:
+
+```sh
+-e IKEY="Optional AppInsights Instrumentation Key" \ 
+--add-host <Public URL_Of_NiFi_Cluster>:<Public_IP_of_Cluster> \
+```
 
 ## Contributing
 
