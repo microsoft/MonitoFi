@@ -1,3 +1,5 @@
+# // Copyright (c) Microsoft Corporation.
+# // Licensed under the MIT license.
 FROM python:3.7-slim
 
 RUN  mkdir /opt/nifimonitor

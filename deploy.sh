@@ -1,6 +1,7 @@
 #!/bin/bash
 # set +x
-
+# // Copyright (c) Microsoft Corporation.
+# // Licensed under the MIT license.
 NiFi_API_URL='http://localhost:8080/nifi-api/'
 USE_AZURE=false
 USE_TEAMS=false
