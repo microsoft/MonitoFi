@@ -52,7 +52,7 @@ Password: root
 
 #### DIY Deployment:
 
-To run NiFi Monitor along with InfluxDb & Grafana:
+To run MonitoFi along with InfluxDb & Grafana:
 
 Run this container for getting a preconfigured InfluxDB and Grafana Instance that MonitoFi can push data to.
 
