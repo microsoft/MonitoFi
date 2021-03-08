@@ -1,5 +1,5 @@
-## AppInsights - Log Analytics KustoQueryLanguage Queries
- These Queries can be used to plot various timecharts in a Log Analytics Workspace. or in AI Dashboard inside Grafana when using Azure Monitor as a datasource.
+## Azure AppInsights/Log Analytics KustoQueryLanguage Queries
+ These Queries can be used to plot various timecharts in a Log Analytics Workspace. AI Dashboard inside Grafana supports Kusto Query Language when using Azure Monitor as a datasource.
  
 ### ActiveThread Counts
 traces
@@ -83,12 +83,3 @@ traces
 | where client_OS == "#35~18.04.1-Ubuntu SMP Mon Jul 13 12:54:45 UTC 2020"
 | extend message_ = tostring(parse_json(message).message)
 | summarize count() by message_
-
-
-
-
-
-
-
-
-
