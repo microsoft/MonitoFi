@@ -31,9 +31,14 @@
   Visit https://github.com/tushardhadiwal/docker-influxdb-grafana for Grafana And InfludDB Support.\
   Visit https://github.com/microsoft/MonitoFi for MonitoFi Source Code.
 
-## Architecture
+## Architecture - On Prem
 
-![](./Docs/MonitoFiArchitectureDiagram.png)
+![](./Docs/MonitoFiOnpremArchDiagram.png)
+
+
+## Architecture - Azure
+
+![](./Docs/MonitoFiAzureArchitectureDiagram.png)
 
 #### Quick Start
 
