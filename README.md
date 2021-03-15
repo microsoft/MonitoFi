@@ -6,7 +6,7 @@
 
 * Runs as an external program to Apache NiFi cluster and can be deployed anywhere as long as it is able to access the Apache NiFi Cluster
 * Monitors the health and performance of the cluster
-* Backed by Data polled using Apache NiFi-API
+* Backed by Data polled using [Apache NiFi-API](https://nifi.apache.org/docs/nifi-docs/rest-api/index.html)
 * Support for SECURE clusters via PKCS12 Cert Based Login
 * Ability to Send Notifications/Alerts Based on Anomalies in Flows or Cluster Operation
 * Highly Configurable
@@ -50,7 +50,7 @@ Username: root
 Password: root
 ```
 
-#### DIY Deployment:
+#### Advance Deployment:
 
 To run MonitoFi along with InfluxDb & Grafana:
 
