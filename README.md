@@ -1,3 +1,4 @@
+![](./Docs/monitofilogo.png)
 # MonitoFi : Health & Performance Monitor for Apache NiFi
 
   One Place for monitoring Health and Performance of your Apache NiFi Cluster!
