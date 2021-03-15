@@ -42,12 +42,12 @@ fi
 
 #Create Folders for Grafana & Influxdb
 echo "Creating necessary volumes for Grafana and InfluxDB..."
-mkdir -p /home/$(whoami)/nifimonitor/{influx,grafana}
+mkdir -p /home/$(whoami)/monitofi/{influx,grafana}
 
 #Run Grafana & InfluxDB Container
 #Note in below command since host netowrking is used, -p flags are ignored. They are kept there to show user which ports are running applications. User can access them with localhost:PORT on host machine directly.
 echo "Launching InfluxDB & Grafana Container"
-docker run -d   --name influxdb-grafana   --network=host   -p 3003:3003   -p 3004:8083   -p 8086:8086   -v /home/$(whoami)/nifimonitor/influx:/var/lib/influxdb   -v /home/$(whoami)/nifimonitor/grafana:/var/lib/grafana   dtushar/docker-influxdb-grafana:latest
+docker run -d   --name influxdb-grafana   --network=host   -p 3003:3003   -p 3004:8083   -p 8086:8086   -v /home/$(whoami)/monitofi/influx:/var/lib/influxdb   -v /home/$(whoami)/monitofi/grafana:/var/lib/grafana   dtushar/docker-influxdb-grafana:latest
 
 #This Is necessary to provide enough time to Grafana to spin up before making API Calls.
 sleep 30
@@ -75,19 +75,19 @@ fi
 
 
 if [ "$USE_AZURE" = true ] ; then
-    #Run NiFi Monitor container
-    echo "Running MiFi 1.0 Container with Azure AppInsights & InfluxDB Enabled..."
+    #Run MonitoFi container
+    echo "Running MonitoFi 1.0 Container with Azure AppInsights & InfluxDB Enabled..."
     echo "Please Make sure to add Instrumentation Key for your Application Insights Resource in the IKEY Variable"
-    docker run --name=mifi1 --network=host -d -e INFLUXDB_SERVER="localhost" -e ENDPOINT_LIST="controller/cluster,flow/cluster/summary,flow/process-groups/root,flow/status,counters,system-diagnostics,system-diagnostics?nodewise=true" -e SLEEP_INTERVAL=300 -e API_URL=$NiFi_API_URL -e IKEY=$AppInsights_InstrumentationKey --restart unless-stopped dtushar/mifi:1.0
+    docker run --name=monitofi1 --network=host -d -e INFLUXDB_SERVER="localhost" -e ENDPOINT_LIST="controller/cluster,flow/cluster/summary,flow/process-groups/root,flow/status,counters,system-diagnostics,system-diagnostics?nodewise=true" -e SLEEP_INTERVAL=300 -e API_URL=$NiFi_API_URL -e IKEY=$AppInsights_InstrumentationKey --restart unless-stopped dtushar/monitofi:1.0
 elif [ "$USE_AZURE" = false ] ; then
-    #Run NiFi Monitor container
-    echo "Running MiFi 1.0 Container..."
-    docker run --name=mifi1 --network=host -d -e INFLUXDB_SERVER="localhost" -e ENDPOINT_LIST="controller/cluster,flow/cluster/summary,flow/process-groups/root,flow/status,counters,system-diagnostics,system-diagnostics?nodewise=true" -e SLEEP_INTERVAL=300 -e API_URL=$NiFi_API_URL --restart unless-stopped dtushar/mifi:1.0
+    #Run MonitoFi container
+    echo "Running MonitoFi 1.0 Container..."
+    docker run --name=monitofi1 --network=host -d -e INFLUXDB_SERVER="localhost" -e ENDPOINT_LIST="controller/cluster,flow/cluster/summary,flow/process-groups/root,flow/status,counters,system-diagnostics,system-diagnostics?nodewise=true" -e SLEEP_INTERVAL=300 -e API_URL=$NiFi_API_URL --restart unless-stopped dtushar/monitofi:1.0
 fi
 
 echo "Importing NiFi Monitor Dashboard to Grafana"
 #Please Adjust the queries according to number of nodes in your NiFi cluster after deployment.
-#Adding Dashboard For NiFI Monitor
+#Adding Dashboard For MonitoFi
 curl -X "POST" "http://localhost:3003/api/dashboards/db"     -H "Content-Type: application/json"      --user $GRAFANA_USERNAME:$GRAFANA_PASSWORD   --data-binary @Grafana/Dashboards/NiFiMonitorDashboard.json | jq
 
 if [ "$USE_AZURE" = true ] ; then

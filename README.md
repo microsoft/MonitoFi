@@ -27,7 +27,7 @@
   Using a Simple Instrumentation Key Received when creating an Application Insights Resource in Azure, all the MonitoFi monitoring data can be pushed to Azure. This data can be viewed using Grafana by importing included AIDashboard. Queries for data in Application Insights are written using Kusto Query Language and are easy to modify.
 
   Visit https://github.com/tushardhadiwal/docker-influxdb-grafana for Grafana And InfludDB Support.\
-  Visit https://github.com/microsoft/MiFi for MonitoFi Source Code.
+  Visit https://github.com/microsoft/MonitoFi for MonitoFi Source Code.
 
 ## Architecture
 
@@ -35,9 +35,9 @@
 
 #### Quick Start
 
-Run following commands on machine which has access to NiFi cluster:
+Run following commands on machine which has access to Apache NiFi cluster:
 ```sh
-git clone git@github.com:microsoft/MiFi.git
+git clone git@github.com:microsoft/MonitoFi.git
 ```
 Fully Automated Script will take care of running InfluxDB & Grafana container , configuring datasources in grafana, importing pre included dashboards in grafana, Adding notification channels if needed, Running MonitoFi container against your cluster. Please set variables at the top of the script to desired state.
 ```sh
@@ -63,8 +63,8 @@ docker run -d \
   -p 3003:3003 \
   -p 3004:8083 \
   -p 8086:8086 \
-  -v /home/$(whoami)/nifimonitor/influx:/var/lib/influxdb \
-  -v /home/$(whoami)/nifimonitor/grafana:/var/lib/grafana \
+  -v /home/$(whoami)/monitofi/influx:/var/lib/influxdb \
+  -v /home/$(whoami)/monitofi/grafana:/var/lib/grafana \
   dtushar/docker-influxdb-grafana:latest
 ```
 You can now visit http://localhost:3003 to access Grafana with following credentials.
@@ -84,20 +84,20 @@ Run this command to run MonitoFi against your NiFi Cluster :
 
 ```sh
 docker run \
---name=mifi1 \
+--name=monitofi1 \
 --network=host -d \
 -e INFLUXDB_SERVER="influxdb-grafana" \
 -e ENDPOINT_LIST="controller/cluster,flow/cluster/summary,flow/process-groups/root,flow/status,counters,system-diagnostics" \
 -e SLEEP_INTERVAL=300 \
 -e API_URL='http://localhost:8080/nifi-api/' \
 --restart unless-stopped \
-dtushar/mifi:1.0
+dtushar/monitofi:1.0
 ```
 
 If your NiFi Cluster is SECURE and supports login via certificate then please add the following to the above command, this will mount the certificate into MonitoFi Container:
 ```sh
 -e SECURE=True \
--v $(pwd)/keystore.pkcs12:/opt/nifimonitor/cert.pkcs12 \
+-v $(pwd)/keystore.pkcs12:/opt/monitofi/cert.pkcs12 \
 -e CERT_PASS="PasswordForCertificate" \
 ```
 

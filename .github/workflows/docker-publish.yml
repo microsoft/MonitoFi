@@ -16,7 +16,7 @@ on:
       - main
 
 env:
-  IMAGE_NAME: mifi
+  IMAGE_NAME: monitofi
 
 jobs:
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
@@ -98,7 +98,7 @@ jobs:
         with:
           push: true
           tags: |
-           dtushar/mifi:latest
+           dtushar/monitofi:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

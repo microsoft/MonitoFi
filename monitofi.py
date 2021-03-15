@@ -22,7 +22,7 @@ IKEY = os.getenv('IKEY', "REPLACE_ME")
 SLEEP_INTERVAL = int(os.getenv('SLEEP_INTERVAL', 300))
 
 SECURE = os.getenv('SECURE', False)  # Is NiFi Cluster Secure
-CERT_FILE = os.getenv('CERT_FILE', '/opt/nifimonitor/cert.pkcs12')
+CERT_FILE = os.getenv('CERT_FILE', '/opt/monitofi/cert.pkcs12')
 CERT_PASS = os.getenv('CERT_PASS', 'REPLACE_ME')
 
 INFLUXDB_SERVER = os.getenv('INFLUXDB_SERVER', "127.0.0.1") # IP or hostname to InfluxDB server
@@ -39,7 +39,7 @@ conditions = {
     }
 
 # Sysout Logging Setup
-logger = logging.getLogger("nifi-monitor")
+logger = logging.getLogger("monitofi")
 logger.setLevel(logging.INFO)
 syshandler = logging.StreamHandler(sys.stdout)
 syshandler.setLevel(logging.INFO)
