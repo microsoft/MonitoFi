@@ -1,5 +1,5 @@
 ![](./Docs/monitofilogo.png)
-[![Docker Pulls](https://img.shields.io/docker/pulls/dtushar/monitofi.svg)](https://hub.docker.com/r/dtushar/monitofi) [![license](https://img.shields.io/github/license/microsoft/monitofi.svg)](https://hub.docker.com/r/dtushar/monitofi)
+[![Docker Pulls](https://img.shields.io/docker/pulls/dtushar/monitofi.svg)](https://hub.docker.com/r/dtushar/monitofi) [![license](https://img.shields.io/github/license/microsoft/MonitoFi)](https://hub.docker.com/r/dtushar/monitofi)
 # MonitoFi : Health & Performance Monitor for Apache NiFi
 
   One Place for monitoring Health and Performance of your Apache NiFi Cluster!
