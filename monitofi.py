@@ -141,7 +141,7 @@ while conditions[MODE]():
             current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
             points = [{
             "measurement": ENDPOINT,
-            "tags": {},
+            "tags": API_URL,
             "time": current_time,
             "fields": flat_response 
             }]
