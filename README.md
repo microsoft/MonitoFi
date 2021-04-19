@@ -98,7 +98,7 @@ docker run \
 -e SLEEP_INTERVAL=300 \
 -e API_URL='http://localhost:8080/nifi-api/' \
 --restart unless-stopped \
-dtushar/monitofi:1.0
+dtushar/monitofi:latest
 ```
 
 If your NiFi Cluster is SECURE and supports login via certificate then please add the following to the above command, this will mount the certificate into MonitoFi Container:
