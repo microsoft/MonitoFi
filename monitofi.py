@@ -14,7 +14,7 @@ from applicationinsights.exceptions import enable
 from influxdb import InfluxDBClient
 from datetime import datetime
 
-API_URL = os.getenv('API_URL', "http://localhost:8080/nifi-api/")  # complete api-endpoint
+API_URL = os.getenv('API_URL', "http://localhost:8080/nifi-api/").split(',')  # Comma separated list of nifi cluster api urls in case of multiple clusters.
 ENDPOINT_LIST = os.getenv('ENDPOINT_LIST', "controller/cluster,flow/cluster/summary,flow/process-groups/root,flow/status,counters,system-diagnostics?nodewise=true").split(',')
 MODE = os.getenv('MODE', "unlimited")  # In limited mode, only NUMBEROFITERATIONS API calls are made before exiting.
 NUMBER_OF_ITERATIONS = int(os.getenv('NUMBER_OF_ITERATIONS', 2))
@@ -133,23 +133,24 @@ def match_key(ignorelist, value):
 
 while conditions[MODE]():
     try:
-        for ENDPOINT in ENDPOINT_LIST:
-            r = requests.get(url=API_URL + ENDPOINT) if SECURE == False else get(url=API_URL + ENDPOINT, headers={
-                'Content-Type': 'application/json'}, verify=False, pkcs12_filename=CERT_FILE, pkcs12_password=CERT_PASS)
-            received_response = r.json()
-            flat_response = flattening(received_response, "", [])
-            current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-            points = [{
-            "measurement": ENDPOINT,
-            "tags": {'APIURL':API_URL},
-            "time": current_time,
-            "fields": flat_response 
-            }]
-            logger.info(ENDPOINT, extra=received_response)
-            iclient.write_points(points)
-        if IKEY != "REPLACE_ME":
-            handler.flush()
-        count += 1
+        for AURL in API_URL:
+            for ENDPOINT in ENDPOINT_LIST:
+                r = requests.get(url=AURL + ENDPOINT) if SECURE == False else get(url=AURL + ENDPOINT, headers={
+                    'Content-Type': 'application/json'}, verify=False, pkcs12_filename=CERT_FILE, pkcs12_password=CERT_PASS)
+                received_response = r.json()
+                flat_response = flattening(received_response, "", [])
+                current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+                points = [{
+                "measurement": ENDPOINT,
+                "tags": {'APIURL':AURL},
+                "time": current_time,
+                "fields": flat_response 
+                }]
+                logger.info(ENDPOINT, extra=received_response)
+                iclient.write_points(points)
+            if IKEY != "REPLACE_ME":
+                handler.flush()
+            count += 1
     except Exception as e:
         # this will send an exception to the Application Insights Logs
         logging.exception("Code ran into an unforseen exception!", sys.exc_info()[0])
