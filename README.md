@@ -116,6 +116,13 @@ If your NiFi Cluster is SECURE and supports login via certificate then please ad
 --add-host <Public URL_Of_NiFi_Cluster>:<Public_IP_of_Cluster> \
 ```
 
+* To Monitor Multiple Apache NiFi clusters with one MonitoFi container, you can provide comma separated list of API URLs. This functionality is limited to monitoring same set of endpoints for all clusters. Secure Clusters need to share common certificate for authentication.
+
+```sh
+-e ENDPOINT_LIST="controller/cluster,flow/cluster/summary,flow/process-groups/root,flow/status,counters,system-diagnostics" \
+-e API_URL="http://NiFiCluster1:8080/nifi-api/,http://NiFiCluster2:8080/nifi-api/,http://NiFiCluster3:8080/nifi-api/" \
+```
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
