@@ -85,7 +85,7 @@ Password: root
 - You can modify the queries to adjust to number of nodes in your Apache NiFi cluster.
 - Configure alerts/notifications as Needed. Microsoft Teams alerts template can be imported as shown in deploy script.
 
-Pleae Refer to deploy.sh script for adding various datasources and configurations related to grafana with curl commands.
+Please Refer to deploy.sh script for adding various datasources and configurations related to grafana with curl commands.
 
 Run this command to run MonitoFi against your NiFi Cluster :
 
